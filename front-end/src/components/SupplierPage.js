@@ -248,35 +248,9 @@ const SupplierPage = () => {
                         />
                     </Form.Group>
 
-                    <Form.Group controlId='emailTitle' className="form-group">
-                        <Form.Label className="form-label">Email Title</Form.Label>
-                        <Form.Control
-                            type='Text'
-                            name='emailTitle'
-                            placeholder="Enter the title of your email"
-                            value={supplierInfo.emailTitle || ''}
-                            onChange={handleSupplier}
-                        />
-                    </Form.Group>
-
-                    <Form.Group controlId='email_msg' className="form-group">
-                        <Form.Label className="form-label">Email Content</Form.Label>
-                        <Form.Control
-                            type='textfield'
-                            name='emailContent'
-                            placeholder="Enter the content of your email"
-                            value={supplierInfo.emailContent || ''}
-                            onChange={handleSupplier}
-                        />
-                    </Form.Group>
-
                     <Button className='btn btn-outline-info m-1 button-text-color' variant='primary' onClick={updateSupplier}>
                         Update
                     </Button>
-                    <Button className='btn btn-outline-secondary m-1 button-text-color' variant='primary' onClick={handleEmail}>
-                        SendEmail
-                    </Button>
-
                     <Button className='btn btn-outline-danger m-1 btn-delete' variant='primary' onClick={handleDeleteSupplier}>
                         Delete
                     </Button>

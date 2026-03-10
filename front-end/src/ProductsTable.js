@@ -51,11 +51,7 @@ const ProductsTable = () => {
         }
     }
 
-
-
-
     const HandleUpdate = (name, quantity_in_stock, quantity_sold, unit_price, revenue, id, supplier_id) => {
-
         setUpdateProductInfo({
             ProductName: name,
             QuantityInStock: quantity_in_stock,
@@ -64,12 +60,8 @@ const ProductsTable = () => {
             Revenue: revenue,
             ProductId: id,
             SupplierId: supplier_id || ''
-
         });
-
         navigate("/updateproduct");
-
-
     }
 
     const HandleSupplier = (supplier_id) => {
@@ -95,40 +87,44 @@ const ProductsTable = () => {
     }
 
     return (
-        <Table striped bordered hover  >
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Product Name</th>
-                    <th>Quantity In Stock</th>
-                    <th>Quantity Sold</th>
-                    <th>Unit Price</th>
-                    <th>Revenue</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {(displayedProducts?.data.length ? displayedProducts.data : products.data).map((product) =>
-                    <ProductsRow
-                        key={product.id}
-                        id={product.id}
-                        supplier_id={product.supplier_id}
-                        name={product.name}
-                        quantity_in_stock={product.quantity_in_stock}
-                        quantity_sold={product.quantity_sold}
-                        unit_price={product.unit_price}
-                        revenue={product.revenue}
-                        HandleDelete={HandleDelete}
-                        HandleUpdate={HandleUpdate}
-                        HandleSupplier={HandleSupplier}
-                        AddSupplier={AddSupplier} />
-                )}
-            </tbody>
-        </Table>
-
-
+        <>
+            <Table striped bordered hover>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Product Name</th>
+                        <th>Quantity In Stock</th>
+                        <th>Quantity Sold</th>
+                        <th>Unit Price</th>
+                        <th>Revenue</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {!displayedProducts?.notFound &&
+                        (displayedProducts?.data.length ? displayedProducts.data : products.data).map((product) =>
+                            <ProductsRow
+                                key={product.id}
+                                id={product.id}
+                                supplier_id={product.supplier_id}
+                                name={product.name}
+                                quantity_in_stock={product.quantity_in_stock}
+                                quantity_sold={product.quantity_sold}
+                                unit_price={product.unit_price}
+                                revenue={product.revenue}
+                                HandleDelete={HandleDelete}
+                                HandleUpdate={HandleUpdate}
+                                HandleSupplier={HandleSupplier}
+                                AddSupplier={AddSupplier} />
+                        )
+                    }
+                </tbody>
+            </Table>
+            {displayedProducts?.notFound && (
+                <p className="text-center text-muted mt-4">No products found!</p>
+            )}
+        </>
     )
-
 }
 
 export default ProductsTable

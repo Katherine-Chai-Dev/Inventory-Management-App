@@ -15,10 +15,13 @@ const NavBar = () => {
 
   const fileteredPoducts = (e) => {
     e.preventDefault()
-    const searchedProducts = products.data.filter(product => product.name.toLowerCase().includes(search.toLowerCase()))
-    setDisplayedProducts({ "data": [...searchedProducts] })
-
-
+    const searchedProducts = products.data.filter(product => 
+      product.name.toLowerCase().includes(search.toLowerCase())
+    )
+    setDisplayedProducts({ 
+      "data": [...searchedProducts],
+      "notFound": searchedProducts.length === 0  
+    })
   }
 
 

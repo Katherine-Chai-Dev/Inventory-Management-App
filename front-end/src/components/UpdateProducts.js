@@ -12,60 +12,51 @@ const UpdateProducts = () => {
         setUpdateProductInfo({ ...updateProductInfo, [e.target.name]: e.target.value })
     }
 
-  
-
     const handleUpdateSubmit = async (e) => {
         e.preventDefault()
 
-          const quantityInStock = Number(updateProductInfo.QuantityInStock);
-          const quantitySold = Number(updateProductInfo.QuantitySold);
-          const unitPrice = Number(updateProductInfo.UnitPrice);
-          
-          if (!updateProductInfo.ProductName || updateProductInfo.ProductName.trim() === '') {
-              alert("Product Name is required!");
-              return;
-          }
-  
-          if (isNaN(quantityInStock)) {
-              alert("Quantity In Stock must be a valid number!");
-              return;
-          }
-          
+        const quantityInStock = Number(updateProductInfo.QuantityInStock);
+        const quantitySold = Number(updateProductInfo.QuantitySold);
+        const unitPrice = Number(updateProductInfo.UnitPrice);
 
-          if (quantityInStock < 0) {
-              alert("Quantity In Stock cannot be negative!");
-              return;
-          }
-          
+        if (!updateProductInfo.ProductName || updateProductInfo.ProductName.trim() === '') {
+            alert("Product Name is required!");
+            return;
+        }
 
-          if (isNaN(quantitySold)) {
-              alert("Quantity Sold must be a valid number!");
-              return;
-          }
-          
+        if (isNaN(quantityInStock)) {
+            alert("Quantity In Stock must be a valid number!");
+            return;
+        }
 
-          if (quantitySold < 0) {
-              alert("Quantity Sold cannot be negative!");
-              return;
-          }
-          
+        if (quantityInStock < 0) {
+            alert("Quantity In Stock cannot be negative!");
+            return;
+        }
 
-          if (isNaN(unitPrice)) {
-              alert("Unit Price must be a valid number!");
-              return;
-          }
-          
- 
-          if (unitPrice < 0) {
-              alert("Unit Price cannot be negative!");
-              return;
-          }
-          
+        if (isNaN(quantitySold)) {
+            alert("Quantity Sold must be a valid number!");
+            return;
+        }
+
+        if (quantitySold < 0) {
+            alert("Quantity Sold cannot be negative!");
+            return;
+        }
+
+        if (isNaN(unitPrice)) {
+            alert("Unit Price must be a valid number!");
+            return;
+        }
+
+        if (unitPrice < 0) {
+            alert("Unit Price cannot be negative!");
+            return;
+        }
+
         const url = "http://127.0.0.1:8000/product/" + updateProductInfo.ProductId
 
-
         try {
-
             const response = await fetch(url, {
                 method: "PUT",
                 mode: 'cors',
@@ -84,7 +75,12 @@ const UpdateProducts = () => {
             })
 
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                if (response.status === 404) {
+                    alert(`Supplier ID ${updateProductInfo.SupplierId} does not exist. Please enter a valid Supplier ID.`);
+                } else {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return;
             }
 
             const resp = await response.json()
@@ -95,64 +91,56 @@ const UpdateProducts = () => {
                 alert("Failed to update product" + resp.message)
             }
 
+            navigate("/")
+
         } catch (error) {
             alert("Error updating product: " + error.message)
         }
-
-
-
-        navigate("/")
-
     }
 
+    return (
+        <Card>
+            <Card.Body>
+                <Form onSubmit={handleUpdateSubmit} >
+                    <Form.Group controlId="ProductName" className="form-group">
+                        <Form.Label className="form-label">Product Name</Form.Label>
+                        <Form.Control type="text" name="ProductName"
+                            placeholder="Product Name" value={updateProductInfo.ProductName} onChange={HandleUpdateProducts} />
+                    </Form.Group>
 
+                    <Form.Group controlId="QuantityInStock" className="form-group">
+                        <Form.Label className="form-label">Quantity In Stock</Form.Label>
+                        <Form.Control type="number" name="QuantityInStock"
+                            placeholder="Quantity In Stock"
+                            value={updateProductInfo.QuantityInStock}
+                            onChange={HandleUpdateProducts} />
+                    </Form.Group>
 
+                    <Form.Group controlId="QuantitySold" className="form-group">
+                        <Form.Label className="form-label">Quantity Sold</Form.Label>
+                        <Form.Control type="number" name="QuantitySold" placeholder="Quantity Sold"
+                            value={updateProductInfo.QuantitySold} onChange={HandleUpdateProducts} />
+                    </Form.Group>
 
-    return (<Card>
-        <Card.Body>
-            <Form onSubmit={handleUpdateSubmit} >
-                <Form.Group controlId="ProductName" className="form-group"
-                >
-                    <Form.Label className="form-label">Product Name</Form.Label>
-                    <Form.Control type="text" name="ProductName"
-                        placeholder="Product Name" value={updateProductInfo.ProductName} onChange={HandleUpdateProducts} />
-                </Form.Group>
+                    <Form.Group controlId="UnitPrice" className="form-group">
+                        <Form.Label className="form-label">Unit Price</Form.Label>
+                        <Form.Control type="number" name="UnitPrice" placeholder="Unit Price"
+                            value={updateProductInfo.UnitPrice} onChange={HandleUpdateProducts} />
+                    </Form.Group>
 
-                <Form.Group controlId="QuantityInStock" className="form-group">
-                    <Form.Label className="form-label">Quantity In Stock</Form.Label>
-                    <Form.Control type="number" name="QuantityInStock"
-                        placeholder="Quantity In Stock"
-                        value={updateProductInfo.QuantityInStock}
-                        onChange={HandleUpdateProducts} />
-                </Form.Group>
+                    <Form.Group controlId="SupplierId" className="form-group">
+                        <Form.Label className="form-label">Supplier Id</Form.Label>
+                        <Form.Control type="number" name="SupplierId" value={updateProductInfo.SupplierId} onChange={HandleUpdateProducts}
+                            placeholder="Supplier Id (optional — leave blank if no supplier)" />
+                    </Form.Group>
 
-                <Form.Group controlId="QuantitySold" className="form-group">
-                    <Form.Label className="form-label">Quantity Sold</Form.Label>
-                    <Form.Control type="number" name="QuantitySold" placeholder="Quantity Sold"
-                        value={updateProductInfo.QuantitySold} onChange={HandleUpdateProducts} />
-                </Form.Group>
-
-                <Form.Group controlId="UnitPrice" className="form-group">
-                    <Form.Label className="form-label">Unit Price</Form.Label>
-                    <Form.Control type="number" name="UnitPrice" placeholder="Unit Price"
-                        value={updateProductInfo.UnitPrice} onChange={HandleUpdateProducts}
-                    />
-                </Form.Group>
-
-                <Form.Group controlId="SupplierId" className="form-group">
-                    <Form.Label className="form-label">Supplier Id</Form.Label>
-                    <Form.Control type="number" name="SupplierId" value={updateProductInfo.SupplierId} onChange={HandleUpdateProducts}
-                        placeholder="Supplier Id" />
-                </Form.Group>
-
-                <Button variant="primary" type="submit" style={{ marginTop: "1rem" }}>
-                    Submit
-                </Button>
-            </Form>
-        </Card.Body>
-    </Card>
+                    <Button variant="primary" type="submit" style={{ marginTop: "1rem" }}>
+                        Submit
+                    </Button>
+                </Form>
+            </Card.Body>
+        </Card>
     )
-
 }
 
 export default UpdateProducts;

@@ -1,14 +1,14 @@
-import React, { useState, createContext,useEffect} from 'react'
+import React, { useState, createContext, useEffect } from 'react'
 export const ProductContext = createContext();
 
-export const ProductProvider = ({children}) => {
+export const ProductProvider = ({ children }) => {
 
     const [products, setProducts] = useState(() => {
         const saved = localStorage.getItem('products');
         return saved ? JSON.parse(saved) : { 'data': [] };
     });
     const [displayedProducts, setDisplayedProducts] = useState({ 'data': [] });
-  
+
     useEffect(() => {
         localStorage.setItem('products', JSON.stringify(products));
     }, [products]);
@@ -19,7 +19,7 @@ export const ProductProvider = ({children}) => {
             displayedProducts,
             setDisplayedProducts
         }}>
-           {children}
+            {children}
         </ProductContext.Provider>
     )
 }
@@ -28,7 +28,7 @@ export const UpdateProductContext = createContext();
 
 
 
-export const UpdateProductContextProvider = ({children}) => {
+export const UpdateProductContextProvider = ({ children }) => {
 
 
 
@@ -50,7 +50,7 @@ export const UpdateProductContextProvider = ({children}) => {
     }, [updateProductInfo]);
 
     return (
-        <UpdateProductContext.Provider value={{updateProductInfo, setUpdateProductInfo}}>
+        <UpdateProductContext.Provider value={{ updateProductInfo, setUpdateProductInfo }}>
             {children}
         </UpdateProductContext.Provider>
     )
@@ -59,9 +59,9 @@ export const UpdateProductContextProvider = ({children}) => {
 export const SupplierContext = createContext();
 
 
-export const SupplierInfoContextProvider = ({children}) => {
+export const SupplierInfoContextProvider = ({ children }) => {
 
-  
+
     const [supplierInfo, setSupplierInfo] = useState(() => {
         const saved = localStorage.getItem('supplierInfo');
         return saved ? JSON.parse(saved) : {
@@ -81,7 +81,7 @@ export const SupplierInfoContextProvider = ({children}) => {
 
 
     return (
-        <SupplierContext.Provider value={{supplierInfo, setSupplierInfo}}>
+        <SupplierContext.Provider value={{ supplierInfo, setSupplierInfo }}>
             {children}
         </SupplierContext.Provider>
     )
